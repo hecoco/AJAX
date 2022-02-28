@@ -81,8 +81,13 @@ var server = http.createServer(function (request, response) {
             const request = new XMLHttpRequest()
             request.open('GET','/index2.html')
             request.onreadystatechange = ()=>{
-                if(request.readyState === 4){//查看
-                    if(request.status>=200 && request.status<300){//查看状态码
+                if(request.readyState === 4){//查看XMLHttpRequest状态
+                    //0: 刚刚创建 还未调用open()
+                    //1: open()被调用
+                    //2: send()被调用
+                    //3: 下载中
+                    //4: 下载完成
+                    if(request.status>=200 && request.status<300){//查看响应状态码
                         const div = document.createElement('div')
                         div.innerHTML = request.response
                         document.body.appendChild(div)        
@@ -101,6 +106,8 @@ var server = http.createServer(function (request, response) {
                     const dom = request.responseXML
                     const text = dom.getElementsByTamName('warning')[0].textContent
                     console.log(text.trim())
+                }else{
+                    console.log('请求失败')
                 }
             }
             request.send();
@@ -116,6 +123,8 @@ var server = http.createServer(function (request, response) {
                     //JSON.stringify    JS=>JSON
                     //失败会抛出Error对象
                     //用try catch捕获
+                }else{
+                    console.log('请求失败')
                 }
             }
             request.send();
