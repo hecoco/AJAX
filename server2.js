@@ -20,7 +20,7 @@ var server = http.createServer(function (request, response) {
     /******** 从这里开始看，上面不要看 ************/
 
     console.log('有个傻子发请求过来啦！路径（带查询参数）为：' + pathWithQuery)
-    if (path === '/index2.html') {//qq
+    if (path === '/index2.html') {//qq  JSONP
         response.statusCode = 200
         response.setHeader('Content-Type', 'text/html;charset=utf-8')
         response.write(`index2.html`)
@@ -41,6 +41,15 @@ var server = http.createServer(function (request, response) {
             response.statusCode = 404
             response.end();
         }
+    } else if (path === '/frank.js') {//CORS
+        response.statusCode = 200
+        response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
+        response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8989')
+        const string = `{{data}}`.toString()
+        const data = `[{"name": "张三"}]`.toString()
+        const string2 = string.replace('{{data}}', data)
+        response.write(string2)
+        response.end()
     } else {
         response.statusCode = 404
         response.setHeader('Content-Type', 'text/html;charset=utf-8')

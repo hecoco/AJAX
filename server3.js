@@ -30,11 +30,12 @@ var server = http.createServer(function (request, response) {
         </head>
         <body>
         <h1>hei</h1>
+        <script src="main3.js"></script></body>
         <script src="main.js"></script></body>
         </html>
         `)
         response.end()
-    } else if (path === '/main.js') {//chao
+    } else if (path === '/main.js') {//frank  JSONP
         response.statusCode = 200
         response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
         response.write(`
@@ -71,6 +72,25 @@ var server = http.createServer(function (request, response) {
         // document.body.appendChild(script)
         `)
         response.end()
+    } else if (path === '/main3.js') {//frank  CORS
+        response.statusCode = 200
+        response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
+        response.write(`const request = new XMLHttpRequest()
+        request.open('GET', 'http://localhost:8888/frank.js')
+        request.onreadystatechange = () => {
+            console.log(request.readyState)
+            if (request.readyState === 4 && request.status >= 200 && request.status < 300) {
+                const script = document.createElement('script')
+                script.innerHTML = request.response
+                document.body.appendChild(script)
+            } else {
+                console.log('请求失败')
+            }
+        }
+        request.send();
+        `)
+        response.end()
+
     } else {
         response.statusCode = 404
         response.setHeader('Content-Type', 'text/html;charset=utf-8')
