@@ -50,6 +50,13 @@ var server = http.createServer(function (request, response) {
         const string2 = string.replace('{{data}}', data)
         response.write(string2)
         response.end()
+    } else if (path === '/frank2.json') {//CORS
+        response.statusCode = 200
+        response.setHeader('Content-Type', 'text/json;charset=utf-8')
+        response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8989')
+        // const json = `{"name": "张三1"},{"name": "张1"},{"name": "张"}`.toString()
+        response.write(`[{"id": 1},{"id": 2},{"id": 3}]`)
+        response.end()
     } else {
         response.statusCode = 404
         response.setHeader('Content-Type', 'text/html;charset=utf-8')

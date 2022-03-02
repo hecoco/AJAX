@@ -30,7 +30,9 @@ var server = http.createServer(function (request, response) {
         </head>
         <body>
         <h1>hei</h1>
+        <div id='myName'></div>
         <script src="main3.js"></script></body>
+        <script src="main4.js"></script></body>
         <script src="main.js"></script></body>
         </html>
         `)
@@ -78,7 +80,6 @@ var server = http.createServer(function (request, response) {
         response.write(`const request = new XMLHttpRequest()
         request.open('GET', 'http://localhost:8888/frank.js')
         request.onreadystatechange = () => {
-            console.log(request.readyState)
             if (request.readyState === 4 && request.status >= 200 && request.status < 300) {
                 const script = document.createElement('script')
                 script.innerHTML = request.response
@@ -88,6 +89,26 @@ var server = http.createServer(function (request, response) {
             }
         }
         request.send();
+        `)
+        response.end()
+
+    } else if (path === '/main4.js') {//frank  CORS
+        response.statusCode = 200
+        response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
+        response.write(`const request1 = new XMLHttpRequest()
+        request1.open('GET', 'http://localhost:8888/frank2.json')
+        request1.onreadystatechange = () => {
+            console.log(request1.readyState)
+            if (request1.readyState === 4 && request1.status >= 200 && request1.status < 300) {
+                    const json = JSON.parse(request1.response)
+                    for(let i in json){
+                        myName.textContent += json[i].id
+                    }
+                }else{
+                    console.log('请求失败1')
+                }
+            }
+            request1.send();
         `)
         response.end()
 
